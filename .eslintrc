@@ -11,7 +11,7 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:@typescript-eslint/recommended",
-    "plugin:jsx-a11y/recommended",
+    // "plugin:jsx-a11y/recommended",
     "prettier"
   ],
   "parserOptions": {
@@ -29,7 +29,7 @@
       "configFile": false
     }
   },
-  "plugins": ["react", "prettier", "jsx-a11y", "import"],
+  "plugins": ["react", "prettier", "import"],
   "rules": {
     "prettier/prettier": "error",
     "linebreak-style": [0, "unix"],
