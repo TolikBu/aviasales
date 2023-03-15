@@ -1,0 +1,49 @@
+.price-filter
+  display: flex
+  justify-content: center
+
+.list
+  display: flex
+  width: 100%
+  padding: 0
+  margin: 0
+
+.item
+  margin-left: -1px
+  width: 100%
+  list-style-type: none
+
+  &-btn
+    width: 100%
+    height: 100%
+    padding: 15px
+    background-color: #fff
+    border: 1px solid #dfe5ec
+    font-weight: 600
+    font-size: 12px
+    line-height: 20px
+    color: #4a4a4a
+    text-transform: uppercase
+    transition: 0.2s
+    cursor: pointer
+
+    &:hover
+      background-color: #dfe5ec
+      border-color: #dfe5ec
+
+    @media screen and (max-width: 576px)
+      word-break: break-all
+
+  &-active &-btn
+    background-color: #2196f3
+    border-color: #2196f3
+    color: #fff
+    pointer-events: none
+
+  &:first-child &-btn
+    border-top-left-radius: 5px
+    border-bottom-left-radius: 5px
+
+  &:last-child &-btn
+    border-top-right-radius: 5px
+    border-bottom-right-radius: 5px

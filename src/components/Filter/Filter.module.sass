@@ -1,4 +1,4 @@
-.filter
+.transfer-panel
   padding-bottom: 10px
   height: max-content
   background-color: #fff
@@ -13,45 +13,44 @@
   letter-spacing: 0.5px
   text-transform: uppercase
   color: #4A4A4A
-.item
+.inputs
+  padding: 0
+.checkbox-label
   display: flex
+  width: 100%
+  height: 100%
   align-items: center
-  padding: 10px 0 10px 20px
-  margin: 0
-  width: 232px
-  height: 40px
-  font-weight: 400
-  font-size: 13px
-  line-height: 20px
-  color: #4A4A4A
+  padding: 10px 20px
+  background-color: #fff
   cursor: pointer
+  text-decoration: none
   &:hover
     background-color: #F1FCFF
+  & > input
+    display: none
+
 .checkbox
+  position: relative
+  display: inline-block
   width: 20px
   height: 20px
+  background-color: transparient
   border: 1px solid #9ABBCE
-  border-radius: 2px
+  border-radius: 3px
   margin-right: 10px
-  cursor: pointer
-// .checkbox, .checkbox:not(:checked)
-//   position: absolute
-//   left: -9999px
-// .item > .checkbox
-//   display: inline-block
-//   position: relative
-//   padding-left: 50px
-//   line-height: 20px
-//   cursor: pointer
-// .checkbox:before
-//   content: ""
-//   position: absolute
-//   left: 9980px
-//   top: -5px
-//   width: 20px
-//   height: 20px
-//   border: 1px solid #9ABBCE
-//   border-radius: 2px
-//   background-color: #ffffff
-// .checkbox:before:checked
-//   border: 1px solid #red
+  list-style-type: none
+  &-item
+    list-style: none
+  &-label input:checked + .checkbox
+    border-color: #2196F3
+    &::after
+      content: ""
+      position: absolute
+      display: inline-block
+      transform: translate(-50%, -50%) rotate(45deg)
+      top: 40%
+      left: 50%
+      height: 12px
+      width: 6px
+      border-bottom: 2px solid #2196F3
+      border-right: 2px solid #2196F3

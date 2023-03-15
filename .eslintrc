@@ -7,11 +7,11 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:@typescript-eslint/recommended",
     // "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended",
     "prettier"
   ],
   "parserOptions": {
@@ -33,7 +33,7 @@
   "rules": {
     "prettier/prettier": "error",
     "linebreak-style": [0, "unix"],
-    "quotes": "off",
+    "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "indent": "off",
     "react/prefer-stateless-function": "off",
@@ -45,19 +45,23 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/lines-between-class-members": "off",
-    "@typescript-eslint/explicit-function-return-type": "warn",
-    "no-console": ["warn", { "allow": ["error"] }],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/default-param-last": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "react/require-default-props": "off",
+    "react/function-component-definition": "off",
     "react/static-property-placement": "off",
     "react/self-closing-comp": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
     "import/no-unresolved": [2, { "caseSensitive": false }],
+    "import/prefer-default-export": "off",
+    "import/no-named-as-default": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "import/order": [
-      2,
+      "warn",
       {
-        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-        "newlines-between": "always"
+        "groups": ["external", "builtin", "internal", "sibling", "parent", "index"]
       }
     ]
   },
