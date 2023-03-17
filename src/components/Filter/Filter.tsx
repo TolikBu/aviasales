@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import classes from './filter.module.sass';
+import classes from './Filter.module.sass';
 
 import { TransferFilters } from '../../types/TransferFilters';
 import { AppDispatch } from '../../store/store';
