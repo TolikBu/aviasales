@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import classes from './bottomBtn.module.sass';
+import classes from './BottomBtn.module.sass';
 
 interface ButtonProps extends React.PropsWithChildren {
   className?: string;

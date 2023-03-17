@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, connect } from 'react-redux';
 import classNames from 'classnames';
 
-import classes from './filterPrice.module.sass';
+import classes from './FilterPrice.module.sass';
 import { actions } from '../../store/actions';
 import { AppDispatch } from '../../store/store';
 import { FilterPrices } from '../../types/FiterPrices';

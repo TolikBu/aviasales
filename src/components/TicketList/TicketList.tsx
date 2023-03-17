@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import ViewportList from 'react-viewport-list';
 
-import classes from './ticketList.module.sass';
+import classes from './TicketList.module.sass';
 
 import { ITicket } from '../../types/ITicket';
 import Ticket from '../Ticket/Ticket';
