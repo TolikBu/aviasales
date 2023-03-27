@@ -5,7 +5,7 @@ import classes from './Ticket.module.sass';
 
 import { ITicket } from '../../types/ITicket';
 
-interface TicketProps {
+interface ITicketProps {
   data: ITicket;
 }
 
@@ -48,7 +48,7 @@ const formatTransfers = (transfers: string[]) => {
   return transfers.join(', ');
 };
 
-const Ticket: FC<TicketProps> = ({ data }) => {
+const Ticket: FC<ITicketProps> = ({ data }) => {
   const { price, carrierLogoPath } = data;
   const segA = data.segments[0];
   const segB = data.segments[1];

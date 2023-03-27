@@ -5,21 +5,21 @@ import classNames from 'classnames';
 import classes from './FilterPrice.module.sass';
 import { actions } from '../../store/actions';
 import { AppDispatch } from '../../store/store';
-import { FilterPrices } from '../../types/FiterPrices';
+import { EFilterPrices } from '../../types/EFiterPrices';
 import { IAppState } from '../../types/IAppState';
 
 const items = [
-  { type: FilterPrices.Cheap, label: 'Самый дешевый' },
-  { type: FilterPrices.Fastest, label: 'Самый быстрый' },
-  { type: FilterPrices.Optimal, label: 'Оптимальный' },
+  { type: EFilterPrices.Cheap, label: 'Самый дешевый' },
+  { type: EFilterPrices.Fastest, label: 'Самый быстрый' },
+  { type: EFilterPrices.Optimal, label: 'Оптимальный' },
 ];
 
-interface PriceFilterProps {
+interface IPriceFilterProps {
   className?: string;
-  currentPriceFilter: FilterPrices;
+  currentPriceFilter: EFilterPrices;
 }
 
-const FilterPrice: React.FC<PriceFilterProps> = ({ className, currentPriceFilter }) => {
+const FilterPrice: React.FC<IPriceFilterProps> = ({ className, currentPriceFilter }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (

@@ -7,25 +7,25 @@ import Loader from '../Loader/Loader';
 import TicketList from '../TicketList/TicketList';
 import Filter from '../Filter/Filter';
 import FilterPrice from '../FilterPrice/FilterPrice';
-import BottomBtn from '../BottomBtn/BottomBtn';
+import BottomButton from '../BottomButton/BottomButton';
 import logo from '../../assets/logoo.svg';
 import Alert from '../Alert/Alert';
 import { ITicket } from '../../types/ITicket';
 import { AppDispatch } from '../../store/store';
 import { actions } from '../../store/actions';
 import { IAppState } from '../../types/IAppState';
-import { FilterPrices } from '../../types/FiterPrices';
-import { TransferFilters } from '../../types/TransferFilters';
+import { EFilterPrices } from '../../types/EFiterPrices';
+import { ETransferFilters } from '../../types/ETransferFilters';
 
-interface AppProps {
+interface IAppProps {
   requestSearchId: () => Promise<string | null>;
   requestTickets: (searchId: string) => Promise<boolean>;
   searchId: string | null;
   error: string | null;
   isLoading: boolean;
   tickets: ITicket[];
-  filterPrice: FilterPrices;
-  transferFilters: TransferFilters[];
+  filterPrice: EFilterPrices;
+  transferFilters: ETransferFilters[];
   currentTicketsCount: number;
   stop: boolean;
 }
@@ -54,33 +54,33 @@ const sortByOptimal = (ticketA: ITicket, ticketB: ITicket) => {
   return byPrice + byDuration;
 };
 
-const filterByTransferFilters = (filters: TransferFilters[], ticket: ITicket) => {
+const filterByTransferFilters = (filters: ETransferFilters[], ticket: ITicket) => {
   if (filters.length === 0) return true;
 
   let valid = false;
   const stopsA = ticket.segments[0].stops;
   const stopsB = ticket.segments[1].stops;
-  if (filters.includes(TransferFilters.None)) {
+  if (filters.includes(ETransferFilters.None)) {
     valid = stopsA.length === 0 || stopsB.length === 0;
-  } else if (filters.includes(TransferFilters.One)) {
+  } else if (filters.includes(ETransferFilters.One)) {
     valid = stopsA.length === 1 || stopsB.length === 1;
-  } else if (filters.includes(TransferFilters.Two)) {
+  } else if (filters.includes(ETransferFilters.Two)) {
     valid = stopsA.length === 2 || stopsB.length === 2;
-  } else if (filters.includes(TransferFilters.Three)) {
+  } else if (filters.includes(ETransferFilters.Three)) {
     valid = stopsA.length === 3 || stopsB.length === 3;
   }
 
   return valid;
 };
 
-const processTickets = (tickets: ITicket[], filterPrice: FilterPrices, transferFilters: TransferFilters[], currentCount: number) => {
+const processTickets = (tickets: ITicket[], filterPrice: EFilterPrices, transferFilters: ETransferFilters[], currentCount: number) => {
   const newTickets = tickets.slice(0, currentCount);
 
-  if (filterPrice === FilterPrices.Cheap) {
+  if (filterPrice === EFilterPrices.Cheap) {
     newTickets.sort(sortByCheapPrice);
-  } else if (filterPrice === FilterPrices.Fastest) {
+  } else if (filterPrice === EFilterPrices.Fastest) {
     newTickets.sort(sortByDuration);
-  } else if (filterPrice === FilterPrices.Optimal) {
+  } else if (filterPrice === EFilterPrices.Optimal) {
     newTickets.sort(sortByOptimal);
   }
 
@@ -89,7 +89,7 @@ const processTickets = (tickets: ITicket[], filterPrice: FilterPrices, transferF
   });
 };
 
-const App: FC<AppProps> = ({ requestSearchId, requestTickets, searchId, tickets, error, isLoading, filterPrice, transferFilters, currentTicketsCount, stop }) => {
+const App: FC<IAppProps> = ({ requestSearchId, requestTickets, searchId, tickets, error, isLoading, filterPrice, transferFilters, currentTicketsCount, stop }) => {
   useEffect(() => {
     requestSearchId().then((id) => {
       if (id != null) {
@@ -138,9 +138,9 @@ const App: FC<AppProps> = ({ requestSearchId, requestTickets, searchId, tickets,
           <div className={classes['right-bottom']}>
             {renderStatus()}
             {canLoadMore && (
-              <BottomBtn className={classes['more-btn']} onClick={onClickMore}>
+              <BottomButton className={classes['more-btn']} onClick={onClickMore}>
                 Показать еще 5 билетов!
-              </BottomBtn>
+              </BottomButton>
             )}
           </div>
         </div>

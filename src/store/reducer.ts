@@ -1,12 +1,12 @@
 import { SET_PRICE_FILTER, SET_TRANSFER_FILTERS, REQUEST_SEARCH_ID, SET_ERROR, SET_LOADING, REQUEST_TICKETS, REQUEST_MORE_TICKETS } from './actionTypes';
 import { Action } from './actions';
 import { IAppState } from '../types/IAppState';
-import { FilterPrices } from '../types/FiterPrices';
+import { EFilterPrices } from '../types/EFiterPrices';
 
 const TICKETS_PER_REQUEST = 5;
 
 const initialState: IAppState = {
-  filterPrice: FilterPrices.Cheap,
+  filterPrice: EFilterPrices.Cheap,
   transferFilters: [],
   searchId: null,
   error: null,

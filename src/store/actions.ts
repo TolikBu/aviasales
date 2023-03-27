@@ -2,18 +2,18 @@ import { AppDispatch } from './store';
 import { REQUEST_MORE_TICKETS, REQUEST_SEARCH_ID, REQUEST_TICKETS, SET_ERROR, SET_LOADING, SET_PRICE_FILTER, SET_TRANSFER_FILTERS } from './actionTypes';
 import { api } from '../api/api';
 import { ITicket } from '../types/ITicket';
-import { FilterPrices } from '../types/FiterPrices';
-import { TransferFilters } from '../types/TransferFilters';
+import { EFilterPrices } from '../types/EFiterPrices';
+import { ETransferFilters } from '../types/ETransferFilters';
 import { IAppState } from '../types/IAppState';
 
 export interface SetPriceFilterAction {
   type: typeof SET_PRICE_FILTER;
-  payload: FilterPrices;
+  payload: EFilterPrices;
 }
 
 export interface SetTransferFiltersAction {
   type: typeof SET_TRANSFER_FILTERS;
-  payload: TransferFilters[];
+  payload: ETransferFilters[];
 }
 
 export interface RequestSearchIdAction {
@@ -45,11 +45,11 @@ export interface RequestMoreTickets {
 
 export type Action = SetPriceFilterAction | SetTransferFiltersAction | SetErrorAction | SetLoadingAction | RequestSearchIdAction | RequestTicketsAction | RequestMoreTickets;
 
-const setPriceFilter = (filter: FilterPrices): SetPriceFilterAction => {
+const setPriceFilter = (filter: EFilterPrices): SetPriceFilterAction => {
   return { type: SET_PRICE_FILTER, payload: filter };
 };
 
-const setTransferFilters = (filters: TransferFilters[]): SetTransferFiltersAction => {
+const setTransferFilters = (filters: ETransferFilters[]): SetTransferFiltersAction => {
   return { type: SET_TRANSFER_FILTERS, payload: filters };
 };
 

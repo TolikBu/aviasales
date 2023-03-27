@@ -1,10 +1,10 @@
 import { ITicket } from './ITicket';
-import { FilterPrices } from './FiterPrices';
-import { TransferFilters } from './TransferFilters';
+import { EFilterPrices } from './EFiterPrices';
+import { ETransferFilters } from './ETransferFilters';
 
 export interface IAppState {
-  filterPrice: FilterPrices;
-  transferFilters: TransferFilters[];
+  filterPrice: EFilterPrices;
+  transferFilters: ETransferFilters[];
   searchId: string | null;
   error: string | null;
   tickets: ITicket[];

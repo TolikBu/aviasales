@@ -3,11 +3,11 @@ import React from 'react';
 
 import classes from './Loader.module.scss';
 
-interface LoaderProps {
+interface ILoaderProps {
   className?: string;
 }
 
-const Loader: React.FC<LoaderProps> = ({ className }) => {
+const Loader: React.FC<ILoaderProps> = ({ className }) => {
   return <div className={classNames(classes.loader, className)}></div>;
 };
 

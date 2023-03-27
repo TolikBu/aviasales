@@ -6,11 +6,11 @@ import classes from './TicketList.module.sass';
 import { ITicket } from '../../types/ITicket';
 import Ticket from '../Ticket/Ticket';
 
-interface TicketListProps {
+interface ITicketListProps {
   tickets?: ITicket[];
 }
 
-const TicketList: FC<TicketListProps> = ({ tickets }) => {
+const TicketList: FC<ITicketListProps> = ({ tickets }) => {
   return (
     <ul>
       <ViewportList items={tickets} itemMinSize={184}>

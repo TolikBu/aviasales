@@ -2,26 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classes from './Filter.module.sass';
 
-import { TransferFilters } from '../../types/TransferFilters';
+import { ETransferFilters } from '../../types/ETransferFilters';
 import { AppDispatch } from '../../store/store';
 import { actions } from '../../store/actions';
 import { IAppState } from '../../types/IAppState';
 
-interface TransferPanelProps {
-  currentFilters: TransferFilters[];
-  setTransferFilters: (type: TransferFilters[]) => void;
+interface ITransferPanelProps {
+  currentFilters: ETransferFilters[];
+  setTransferFilters: (type: ETransferFilters[]) => void;
 }
 
 const filters = [
-  { name: 'none', type: TransferFilters.None, label: 'Без пересадок' },
-  { name: 'one', type: TransferFilters.One, label: '1 пересадка' },
-  { name: 'two', type: TransferFilters.Two, label: '2 пересадки' },
-  { name: 'three', type: TransferFilters.Three, label: '3 пересадки' },
+  { name: 'none', type: ETransferFilters.None, label: 'Без пересадок' },
+  { name: 'one', type: ETransferFilters.One, label: '1 пересадка' },
+  { name: 'two', type: ETransferFilters.Two, label: '2 пересадки' },
+  { name: 'three', type: ETransferFilters.Three, label: '3 пересадки' },
 ];
 
-export const TransferPanel: React.FC<TransferPanelProps> = ({ setTransferFilters, currentFilters }) => {
+export const TransferPanel: React.FC<ITransferPanelProps> = ({ setTransferFilters, currentFilters }) => {
   const onCheckAll = (checked: boolean) => {
-    const newFilters: TransferFilters[] = [];
+    const newFilters: ETransferFilters[] = [];
     if (checked) {
       filters.forEach((option) => {
         newFilters.push(option.type);
@@ -31,11 +31,11 @@ export const TransferPanel: React.FC<TransferPanelProps> = ({ setTransferFilters
     setTransferFilters(newFilters);
   };
 
-  const onCheckFilter = (type: TransferFilters, checked: boolean) => {
+  const onCheckFilter = (type: ETransferFilters, checked: boolean) => {
     if (checked) {
       setTransferFilters([...currentFilters, type]);
     } else {
-      const newFilters: TransferFilters[] = [...currentFilters];
+      const newFilters: ETransferFilters[] = [...currentFilters];
       const idx = currentFilters.findIndex((v) => v === type);
       if (idx !== -1) {
         newFilters.splice(idx, 1);
@@ -45,7 +45,7 @@ export const TransferPanel: React.FC<TransferPanelProps> = ({ setTransferFilters
     }
   };
 
-  const onChangeHandler = (name: string, checked: boolean, type?: TransferFilters) => {
+  const onChangeHandler = (name: string, checked: boolean, type?: ETransferFilters) => {
     if (name === 'all') {
       onCheckAll(checked);
     } else if (type != null) {
@@ -53,7 +53,7 @@ export const TransferPanel: React.FC<TransferPanelProps> = ({ setTransferFilters
     }
   };
 
-  const renderFilter = (name: string, label: string, checked: boolean, type?: TransferFilters) => {
+  const renderFilter = (name: string, label: string, checked: boolean, type?: ETransferFilters) => {
     const id = `transfer-${name}`;
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChangeHandler(name, e.target.checked, type);
@@ -92,7 +92,7 @@ const mapStateToProps = (state: IAppState) => {
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return {
-    setTransferFilters: (filters: TransferFilters[]) => {
+    setTransferFilters: (filters: ETransferFilters[]) => {
       return dispatch(actions.setTransferFilters(filters));
     },
   };
