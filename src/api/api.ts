@@ -24,6 +24,7 @@ const getTickets = async (searchId: string): Promise<{ tickets: ITicket[]; stop:
   const data = await request<{ tickets: ITicket[]; stop: boolean }>(`${BASE_URL}/tickets?searchId=${searchId}`);
 
   const { stop } = data;
+  // console.log(data);
   const tickets = data.tickets.map((item) => {
     const id = cuid();
     const logoPath = `${BASE_LOGO_URL}/${item.carrier}.png`;

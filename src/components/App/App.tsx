@@ -90,13 +90,35 @@ const processTickets = (tickets: ITicket[], filterPrice: EFilterPrices, transfer
 };
 
 const App: FC<IAppProps> = ({ requestSearchId, requestTickets, searchId, tickets, error, isLoading, filterPrice, transferFilters, currentTicketsCount, stop }) => {
+  console.log(tickets);
   useEffect(() => {
     requestSearchId().then((id) => {
       if (id != null) {
         requestTickets(id);
       }
     });
-  }, []);
+  }, [requestSearchId, requestTickets]);
+
+  useEffect(() => {
+    async function subscribe() {
+      if (searchId != null) {
+        const response = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
+        console.log(response);
+        if (response.status === 502) {
+          await subscribe();
+        } else if (response.status !== 200) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await subscribe();
+        } else {
+          const message = await response.json();
+          console.error(message);
+          await subscribe();
+        }
+      }
+    }
+
+    subscribe();
+  }, [searchId, requestTickets]);
 
   const onClickMore = () => {
     if (searchId != null) {
