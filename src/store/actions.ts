@@ -1,5 +1,5 @@
 import { AppDispatch } from './store';
-import { REQUEST_MORE_TICKETS, REQUEST_SEARCH_ID, REQUEST_TICKETS, SET_ERROR, SET_LOADING, SET_PRICE_FILTER, SET_TRANSFER_FILTERS } from './actionTypes';
+import { REQUEST_MORE_TICKETS, ADD_TICKETS, SET_ERROR, SET_LOADING, SET_PRICE_FILTER, SET_SEARCH_ID, SET_TRANSFER_FILTERS } from './actionTypes';
 import { api } from '../api/api';
 import { ITicket } from '../types/ITicket';
 import { EFilterPrices } from '../types/EFiterPrices';
@@ -16,11 +16,6 @@ export interface SetTransferFiltersAction {
   payload: ETransferFilters[];
 }
 
-export interface RequestSearchIdAction {
-  type: typeof REQUEST_SEARCH_ID;
-  payload: string;
-}
-
 export interface SetErrorAction {
   type: typeof SET_ERROR;
   payload: string | null;
@@ -31,19 +26,21 @@ export interface SetLoadingAction {
   payload: boolean;
 }
 
-export interface RequestTicketsAction {
-  type: typeof REQUEST_TICKETS;
-  payload: {
-    tickets: ITicket[];
-    stop: boolean;
-  };
+export interface AddTicketsAction {
+  type: typeof ADD_TICKETS;
+  payload: ITicket[];
 }
 
-export interface RequestMoreTickets {
+export interface RequestMoreTicketsAction {
   type: typeof REQUEST_MORE_TICKETS;
 }
 
-export type Action = SetPriceFilterAction | SetTransferFiltersAction | SetErrorAction | SetLoadingAction | RequestSearchIdAction | RequestTicketsAction | RequestMoreTickets;
+export interface SetSearchIdAction {
+  type: typeof SET_SEARCH_ID;
+  payload: string;
+}
+
+export type Action = SetPriceFilterAction | SetTransferFiltersAction | SetErrorAction | SetLoadingAction | AddTicketsAction | RequestMoreTicketsAction | SetSearchIdAction;
 
 const setPriceFilter = (filter: EFilterPrices): SetPriceFilterAction => {
   return { type: SET_PRICE_FILTER, payload: filter };
@@ -61,11 +58,22 @@ const setLoading = (value: boolean): SetLoadingAction => {
   return { type: SET_LOADING, payload: value };
 };
 
+const setSearchId = (value: string): SetSearchIdAction => {
+  return { type: SET_SEARCH_ID, payload: value };
+};
+
+const addTickets = (value: ITicket[]): AddTicketsAction => {
+  return { type: ADD_TICKETS, payload: value };
+};
+const requestMoreTickets = (): RequestMoreTicketsAction => {
+  return { type: REQUEST_MORE_TICKETS };
+};
+
 const requestSearchId = () => {
   return async (dispatch: AppDispatch) => {
     try {
       const id = await api.getSearchId();
-      dispatch({ type: REQUEST_SEARCH_ID, payload: id });
+      dispatch(setSearchId(id));
 
       return id;
     } catch (error) {
@@ -80,32 +88,39 @@ const requestSearchId = () => {
   };
 };
 
-const requestTickets = (searchId: string) => {
+const requestAllTickets = () => {
   return async (dispatch: AppDispatch, getState: () => IAppState) => {
+    const searchId = getState().searchId || '';
     dispatch(setLoading(true));
     dispatch(setError(null));
 
-    const state = getState();
-    if (state.total <= state.currentTicketsCount) {
-      try {
-        const { tickets, stop } = await api.getTickets(searchId);
-        dispatch({ type: REQUEST_TICKETS, payload: { tickets, stop } });
-      } catch (error) {
-        let message = 'Unknown error';
-        if (error instanceof Error) {
-          message = error.message;
+    let stop = false;
+    let tries = 0;
+    const fetch = async () => {
+      while (!stop) {
+        try {
+          const data = await api.getTickets(searchId);
+          dispatch(addTickets(data.tickets));
+          stop = data.stop;
+          tries = 0;
+          await fetch();
+        } catch (error) {
+          tries++;
+          if (tries <= 3) {
+            await fetch();
+            continue;
+          }
+          let message = 'Unknown error';
+          if (error instanceof Error) {
+            message = error.message;
+          }
+          stop = true;
+          dispatch(setError(message));
         }
-
-        dispatch(setError(message));
-        dispatch(setLoading(false));
-        return false;
       }
-    }
-
-    dispatch({ type: REQUEST_MORE_TICKETS });
+    };
+    await fetch();
     dispatch(setLoading(false));
-
-    return true;
   };
 };
 
@@ -113,5 +128,6 @@ export const actions = {
   setPriceFilter,
   setTransferFilters,
   requestSearchId,
-  requestTickets,
+  requestAllTickets,
+  requestMoreTickets,
 };

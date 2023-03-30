@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import classes from './Loader.module.scss';
+import classes from './Loader.module.sass';
 
 interface ILoaderProps {
   className?: string;

@@ -1,4 +1,4 @@
-import { SET_PRICE_FILTER, SET_TRANSFER_FILTERS, REQUEST_SEARCH_ID, SET_ERROR, SET_LOADING, REQUEST_TICKETS, REQUEST_MORE_TICKETS } from './actionTypes';
+import { SET_PRICE_FILTER, SET_TRANSFER_FILTERS, SET_SEARCH_ID, SET_ERROR, SET_LOADING, REQUEST_MORE_TICKETS, ADD_TICKETS } from './actionTypes';
 import { Action } from './actions';
 import { IAppState } from '../types/IAppState';
 import { EFilterPrices } from '../types/EFiterPrices';
@@ -11,10 +11,8 @@ const initialState: IAppState = {
   searchId: null,
   error: null,
   tickets: [],
-  isLoading: true,
-  currentTicketsCount: 0,
-  total: 0,
-  stop: false,
+  isLoading: false,
+  currentTicketsCount: TICKETS_PER_REQUEST,
 };
 
 export const reducer = (state = initialState, action: Action): IAppState => {
@@ -23,28 +21,19 @@ export const reducer = (state = initialState, action: Action): IAppState => {
       return { ...state, filterPrice: action.payload };
     case SET_TRANSFER_FILTERS:
       return { ...state, transferFilters: action.payload };
-    case REQUEST_SEARCH_ID:
+    case SET_SEARCH_ID:
       return { ...state, searchId: action.payload };
     case SET_ERROR:
       return { ...state, error: action.payload };
     case SET_LOADING:
       return { ...state, isLoading: action.payload };
-    case REQUEST_TICKETS: {
-      const { tickets, stop } = action.payload;
-      const newTickets = [...state.tickets, ...tickets];
-      return {
-        ...state,
-        error: null,
-        isLoading: false,
-        tickets: newTickets,
-        total: state.total + tickets.length,
-        stop,
-      };
-    }
+    case ADD_TICKETS:
+      return { ...state, tickets: state.tickets.concat(action.payload) };
+
     case REQUEST_MORE_TICKETS: {
       return {
         ...state,
-        currentTicketsCount: Math.min(state.currentTicketsCount + TICKETS_PER_REQUEST, state.total),
+        currentTicketsCount: Math.min(state.currentTicketsCount + TICKETS_PER_REQUEST, state.tickets.length),
       };
     }
     default:

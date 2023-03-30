@@ -10,6 +10,4 @@ export interface IAppState {
   tickets: ITicket[];
   isLoading: boolean;
   currentTicketsCount: number;
-  total: number;
-  stop: boolean;
 }

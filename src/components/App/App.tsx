@@ -18,16 +18,15 @@ import { EFilterPrices } from '../../types/EFiterPrices';
 import { ETransferFilters } from '../../types/ETransferFilters';
 
 interface IAppProps {
-  requestSearchId: () => Promise<string | null>;
-  requestTickets: (searchId: string) => Promise<boolean>;
-  searchId: string | null;
+  requestSearchId: () => Promise<unknown>;
+  requestAllTickets: () => Promise<unknown>;
+  requestMoreTickets: () => void;
   error: string | null;
   isLoading: boolean;
   tickets: ITicket[];
   filterPrice: EFilterPrices;
   transferFilters: ETransferFilters[];
   currentTicketsCount: number;
-  stop: boolean;
 }
 
 const getTotalDuration = (ticket: ITicket) => {
@@ -89,42 +88,17 @@ const processTickets = (tickets: ITicket[], filterPrice: EFilterPrices, transfer
   });
 };
 
-const App: FC<IAppProps> = ({ requestSearchId, requestTickets, searchId, tickets, error, isLoading, filterPrice, transferFilters, currentTicketsCount, stop }) => {
-  console.log(tickets);
-  useEffect(() => {
-    requestSearchId().then((id) => {
-      if (id != null) {
-        requestTickets(id);
-      }
-    });
-  }, [requestSearchId, requestTickets]);
-
-  useEffect(() => {
-    async function subscribe() {
-      if (searchId != null) {
-        const response = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
-        console.log(response);
-        if (response.status === 502) {
-          await subscribe();
-        } else if (response.status !== 200) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          await subscribe();
-        } else {
-          const message = await response.json();
-          console.error(message);
-          await subscribe();
-        }
-      }
-    }
-
-    subscribe();
-  }, [searchId, requestTickets]);
-
+const App: FC<IAppProps> = ({ requestMoreTickets, requestSearchId, requestAllTickets, tickets, error, isLoading, filterPrice, transferFilters, currentTicketsCount }) => {
   const onClickMore = () => {
-    if (searchId != null) {
-      requestTickets(searchId);
-    }
+    requestMoreTickets();
   };
+
+  useEffect(() => {
+    (async () => {
+      await requestSearchId();
+      requestAllTickets();
+    })();
+  }, []);
 
   const processedTickets = processTickets(tickets, filterPrice, transferFilters, currentTicketsCount);
 
@@ -144,7 +118,7 @@ const App: FC<IAppProps> = ({ requestSearchId, requestTickets, searchId, tickets
     return null;
   };
 
-  const canLoadMore = !isLoading && !stop;
+  const canLoadMore = tickets.length !== currentTicketsCount;
   return (
     <div className={classes.container}>
       <div className={classes['image-block']}>
@@ -173,14 +147,12 @@ const App: FC<IAppProps> = ({ requestSearchId, requestTickets, searchId, tickets
 
 const mapStateToProps = (state: IAppState) => {
   return {
-    searchId: state.searchId,
     error: state.error,
     tickets: state.tickets,
     isLoading: state.isLoading,
     filterPrice: state.filterPrice,
     transferFilters: state.transferFilters,
     currentTicketsCount: state.currentTicketsCount,
-    stop: state.stop,
   };
 };
 
@@ -189,8 +161,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
     requestSearchId: () => {
       return dispatch(actions.requestSearchId());
     },
-    requestTickets: (searchId: string) => {
-      return dispatch(actions.requestTickets(searchId));
+    requestAllTickets: () => {
+      return dispatch(actions.requestAllTickets());
+    },
+    requestMoreTickets: () => {
+      dispatch(actions.requestMoreTickets());
     },
   };
 };

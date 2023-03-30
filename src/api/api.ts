@@ -8,7 +8,7 @@ const request = async <T>(path: string, options?: RequestInit) => {
   const res = await fetch(path, options);
 
   if (!res.ok) {
-    throw Error(res.statusText);
+    throw Error(`failed to fetch ${res.statusText}`);
   }
 
   return (await res.json()) as T;
