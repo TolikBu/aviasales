@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import classes from './Alert.module.scss';
+import classes from './Alert.module.sass';
 
 interface IAlertProps {
   className?: string;
